@@ -1,0 +1,135 @@
+import InputError from '@/Components/InputError';
+import DashboardLayout from '@/Layouts/DashboardLayout';
+import { Textarea } from '@headlessui/react';
+import { useForm, usePage } from '@inertiajs/react';
+import { ChangeEvent } from 'react';
+
+type InputKeyType = 'name' | 'description' | 'notes' | 'level' | 'video' | 'image';
+
+function create() {
+    const { flush }: any = usePage().props;
+    const { post, data, setData, errors, processing } = useForm({
+        name: '',
+        description: '',
+        notes: '',
+        image: '',
+        video: '',
+        level: 'Beginner',
+    });
+
+    const handleInputvalueChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const key = e.target.name as InputKeyType;
+        setData(key, e.target.value);
+    };
+
+    const handleFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        post('/dashboard/exercises');
+        if (flush['success'] != null) {
+            setData('name', '');
+            setData('description', '');
+            setData('notes', '');
+            setData('image', '');
+            setData('video', '');
+        }
+    };
+
+    // console.log(`errors: ${JSON.stringify(flush)}`);
+
+    return (
+        <DashboardLayout>
+            <div className="ml-10">
+                <form className="w-2xl" onSubmit={handleFormSubmit}>
+                    <div className="">
+                        <label htmlFor="name">Name:</label>
+                        <input
+                            id="name"
+                            name="name"
+                            type="text"
+                            className="mt-2 block w-full px-4 py-6 dark:bg-white/10"
+                            placeholder="Plan Name"
+                            value={data.name}
+                            onChange={handleInputvalueChange}
+                        />
+                        <InputError message={errors.name} />
+                    </div>
+                    <div className="mt-2">
+                        <label htmlFor="description">Description:</label>
+                        <Textarea
+                            id="description"
+                            placeholder="Description"
+                            className="mt-1 block w-full p-4 dark:bg-white/10"
+                            value={data.description}
+                            onChange={(e) => setData('description', e.target.value)}
+                        ></Textarea>
+                        <InputError message={errors.description} />
+                    </div>
+                    <div className="mt-2">
+                        <label htmlFor="Notes">notes:</label>
+                        <Textarea
+                            id="notes"
+                            placeholder="Notes"
+                            className="mt-1 block w-full p-4 dark:bg-white/10"
+                            value={data.notes}
+                            onChange={(e) => setData('notes', e.target.value)}
+                        ></Textarea>
+                        <InputError message={errors.description} />
+                    </div>
+
+                    <div className="mt-2">
+                        <label htmlFor="image">Image Url:</label>
+                        <input
+                            id="image"
+                            name="image"
+                            type="text"
+                            className="mt-2 block w-full px-4 py-6 dark:bg-white/10"
+                            placeholder="Image URL"
+                            value={data.image}
+                            onChange={handleInputvalueChange}
+                        />
+                        <InputError message={errors.image} />
+                    </div>
+                    <div className="mt-2">
+                        <label htmlFor="video">Video URL:</label>
+                        <input
+                            id="video"
+                            name="duration"
+                            type="text"
+                            className="mt-2 block w-full px-4 py-6 dark:bg-white/10"
+                            placeholder="Video URL"
+                            value={data.video}
+                            onChange={handleInputvalueChange}
+                        />
+                        <InputError message={errors.video} />
+                    </div>
+                    {/* level */}
+                    <div className="mt-2">
+                        <label htmlFor="level">Level:</label>
+                        <select value={data.level} className="block w-full py-3 dark:bg-white/10" onChange={(e) => setData('level', e.target.value)}>
+                            <option value={'Beginner'} className="dark:bg-white/10 dark:text-black">
+                                Beginner
+                            </option>
+                            <option value={'Intermediate'} className="dark:bg-white/10 dark:text-black">
+                                Intermediate
+                            </option>
+                            <option value={'Advanced'} className="dark:bg-white/10 dark:text-black">
+                                Advanced
+                            </option>
+                        </select>
+                    </div>
+
+                    <div className="mt-4 text-end">
+                        <input
+                            disabled={processing}
+                            type="submit"
+                            value={'create'}
+                            className="cursor-pointer rounded-lg px-8 py-3 duration-200 dark:bg-white/10 dark:text-white dark:hover:bg-white/15"
+                        />
+                    </div>
+                </form>
+            </div>
+        </DashboardLayout>
+    );
+}
+
+export default create;

@@ -1,0 +1,34 @@
+<?php
+
+use App\Models\Plan;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('plans', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('name');
+            $table->string('description');
+            $table->integer('sessions_number')->default(1);
+            $table->text('image');
+            $table->enum('level', Plan::$planLevel);
+            $table->float('duration')->default(0.0);
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('plans');
+    }
+};
