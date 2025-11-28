@@ -6,8 +6,8 @@ function index({ plans }: { plans: PlanInterafce[] }) {
     console.log(plans);
     return (
         <DashboardLayout>
-            <header className="ml-10 mr-4 flex h-16 items-center justify-center text-2xl font-bold dark:bg-gray-800">Workout Plans</header>
-            <div className="ml-10 mt-4 grid w-full grid-cols-[repeat(auto-fill,minmax(270px,1fr))] gap-4 pr-14">
+            <header className="flex h-16 items-center justify-center text-2xl font-bold dark:bg-black/30">Workout Plans</header>
+            <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(270px,1fr))] gap-4 p-4">
                 {plans.map((plan) => {
                     return <PlanCard plan={plan} />;
                 })}

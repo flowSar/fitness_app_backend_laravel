@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export interface User {
     id: number;
     name: string;
@@ -35,12 +37,14 @@ export interface SubMenuItem {
     id: number;
     title: string;
     href: string;
+    icon?: ReactNode;
 }
 
 export interface MenuItem {
     id: number;
     title: string;
     href?: string;
+    icon?: ReactNode;
     open?: boolean;
     subTree?: SubMenuItem[];
 }

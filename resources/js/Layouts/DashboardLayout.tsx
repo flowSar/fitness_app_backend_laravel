@@ -9,9 +9,9 @@ function DashboardLayout({ children }: { children: ReactNode }) {
             <Head title="Dashboard" />
 
             <div className="flex w-full flex-1 py-4">
-                <div className="flex w-full flex-1 gap-4 bg-white px-2 shadow-sm sm:rounded-lg dark:bg-gray-800">
+                <div className="dark:bg-spaceGray flex w-full flex-1 gap-4 bg-white px-2 shadow-sm sm:rounded-lg">
                     <SideBar />
-                    <div className="w-4/5 bg-white/20 p-4 text-black dark:text-white">{children}</div>
+                    <div className="w-5/6 bg-white/10 px-2 py-4 text-black dark:text-white">{children}</div>
                 </div>
             </div>
         </AuthenticatedLayout>

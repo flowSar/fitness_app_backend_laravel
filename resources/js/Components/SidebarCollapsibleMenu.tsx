@@ -29,7 +29,11 @@ function SidebarCollapsibleMenu({ menuList = [] }: { menuList: MenuItem[] }) {
                         className={`w-full cursor-pointer rounded-lg ${!item.open ? 'hover:bg-white/10' : ''}`}
                     >
                         <div className="flex w-full items-center justify-between p-2 text-start">
-                            <button className={`font-semibold ${item.open ? '' : ''}`}>{item.title}</button>
+                            <div className="flex items-center gap-2">
+                                {item.icon ? item.icon : <></>}
+                                <button className={`font-semibold ${item.open ? '' : ''}`}>{item.title}</button>
+                            </div>
+
                             {item.open ? <MdKeyboardArrowDown /> : <MdKeyboardArrowRight />}
                         </div>
 
@@ -37,7 +41,11 @@ function SidebarCollapsibleMenu({ menuList = [] }: { menuList: MenuItem[] }) {
                             <ul key={Math.random()} className="w-full">
                                 {item.subTree?.map((subItem) => {
                                     return (
-                                        <li key={subItem.title} className="cursor-pointer p-1.5 pl-4 duration-200 hover:rounded-lg hover:bg-white/25">
+                                        <li
+                                            key={subItem.title}
+                                            className="flex cursor-pointer items-center gap-2 p-1.5 pl-4 duration-200 hover:rounded-lg hover:bg-white/25"
+                                        >
+                                            {subItem.icon ? subItem.icon : <></>}
                                             <Link href={subItem.href}>{subItem.title}</Link>
                                         </li>
                                     );

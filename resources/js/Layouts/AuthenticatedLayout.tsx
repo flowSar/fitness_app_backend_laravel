@@ -11,8 +11,8 @@ export default function Authenticated({ header, children }: PropsWithChildren<{ 
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
-        <div className="flex min-h-screen w-full flex-col bg-gray-100 dark:bg-gray-900">
-            <nav className="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800">
+        <div className="dark:bg-spaceGray flex min-h-screen w-full flex-col bg-gray-100">
+            <nav className="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-white/10">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
                         <div className="flex">

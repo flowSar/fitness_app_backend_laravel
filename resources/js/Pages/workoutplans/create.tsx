@@ -37,7 +37,7 @@ function create() {
 
     return (
         <DashboardLayout>
-            <div className="ml-10">
+            <div className="ml-10 px-10">
                 <form className="w-2xl" onSubmit={handleFormSubmit}>
                     <div className="">
                         <label htmlFor="name">Name:</label>
@@ -45,7 +45,7 @@ function create() {
                             id="name"
                             name="name"
                             type="text"
-                            className="mt-2 block w-full px-4 py-6 dark:bg-white/10"
+                            className="mt-2 block w-full px-4 py-3 dark:bg-black/10"
                             placeholder="Plan Name"
                             value={data.name}
                             onChange={handleInputvalueChange}
@@ -57,9 +57,10 @@ function create() {
                         <Textarea
                             id="description"
                             placeholder="Description"
-                            className="mt-1 block w-full p-4 dark:bg-white/10"
+                            className="mt-1 block w-full p-4 dark:bg-black/10"
                             value={data.description}
                             onChange={(e) => setData('description', e.target.value)}
+                            rows={2}
                         ></Textarea>
                         <InputError message={errors.description} />
                     </div>
@@ -69,7 +70,7 @@ function create() {
                             id="sessionsNumber"
                             name="sessionsNumber"
                             type="number"
-                            className="mt-2 block w-full px-4 py-6 dark:bg-white/10"
+                            className="mt-2 block w-full px-4 py-3 dark:bg-black/10"
                             placeholder="SessionNumber"
                             value={data.sessionsNumber}
                             onChange={handleInputvalueChange}
@@ -81,7 +82,7 @@ function create() {
                             id="image"
                             name="image"
                             type="text"
-                            className="mt-2 block w-full px-4 py-6 dark:bg-white/10"
+                            className="mt-2 block w-full px-4 py-3 dark:bg-black/10"
                             placeholder="Image URL"
                             value={data.image}
                             onChange={handleInputvalueChange}
@@ -90,7 +91,7 @@ function create() {
                     </div>
                     <div className="mt-2">
                         <label htmlFor="level">Level:</label>
-                        <select value={data.level} className="block w-full py-3 dark:bg-white/10" onChange={(e) => setData('level', e.target.value)}>
+                        <select value={data.level} className="block w-full py-3 dark:bg-black/10" onChange={(e) => setData('level', e.target.value)}>
                             <option value={'Beginner'} className="dark:bg-white/10 dark:text-black">
                                 Beginner
                             </option>
@@ -109,7 +110,7 @@ function create() {
                             name="duration"
                             type="number"
                             step="any"
-                            className="mt-2 block w-full px-4 py-6 dark:bg-white/10"
+                            className="mt-2 block w-full px-4 py-3 dark:bg-black/10"
                             placeholder="Workout Duration"
                             value={data.duration}
                             onChange={handleInputvalueChange}
