@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\PlanController;
+use App\Http\Controllers\PlanSessionExerciseController;
 use App\Http\Controllers\ProfileController;
+use App\Models\PlanSessionExercise;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -33,5 +35,9 @@ Route::post("/dashboard/plans", [PlanController::class, 'store'])->name('dashboa
 Route::get("/dashboard/exercises", [ExerciseController::class, 'index'])->name('dashboard.exercises');
 Route::get("/dashboard/exercises/create", [ExerciseController::class, 'create'])->name('dashboard.exercises');
 Route::post("/dashboard/exercises", [ExerciseController::class, 'store'])->name('dashboard.exercises');
+
+Route::post('/dashboard/planSessionExercises', [PlanSessionExerciseController::class, 'store']);
+
+Route::get("/dashboard/planSessionWorkout/create", [PlanSessionExerciseController::class, 'create'])->name('dashboard.planSessionWorkout.create');
 
 require __DIR__ . '/auth.php';

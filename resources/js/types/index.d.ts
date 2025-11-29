@@ -1,3 +1,4 @@
+import { UUID } from 'crypto';
 import { ReactNode } from 'react';
 
 export interface User {
@@ -13,6 +14,14 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     };
 };
 
+export interface Session {
+    id: UUID;
+    name: string;
+    complete?: boolean;
+    progress?: number;
+    duration?: number;
+}
+
 export interface PlanInterafce {
     id: UUID;
     name: string;
@@ -21,6 +30,7 @@ export interface PlanInterafce {
     image: string;
     duration: number;
     level: String;
+    sessions: Session[];
 }
 
 export interface ExerciseInterface {

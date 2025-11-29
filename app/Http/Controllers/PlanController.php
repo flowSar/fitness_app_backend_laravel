@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Plan;
+use App\Models\PlanSession;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -43,6 +44,14 @@ class PlanController extends Controller
         if (!$plan) {
             return back()->with("error", "plan creation failed");
         }
+
+        for ($i = 0; $i < $attributes['sessionsNumber']; $i++) {
+            PlanSession::create([
+                'name' => 'Day' . $i + 1,
+                'plan_id' => $plan->id,
+            ]);
+        }
+
         return back()->with("success", "plan created successfully");
     }
 }

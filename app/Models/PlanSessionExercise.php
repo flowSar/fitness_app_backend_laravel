@@ -12,5 +12,5 @@ class PlanSessionExercise extends Model
     use HasFactory;
     use HasUuids;
 
-    protected $fillable = ['complete', 'sets', 'reps', 'duration',];
+    protected $fillable = ['complete', 'sets', 'reps', 'duration', 'plan_session_id', 'exercise_id'];
 }

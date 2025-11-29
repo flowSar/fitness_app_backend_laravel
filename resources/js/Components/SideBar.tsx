@@ -21,13 +21,13 @@ function SideBar() {
             icon: <IoGitNetworkOutline />,
             subTree: [
                 {
-                    id: 6,
+                    id: 21,
                     title: 'Workout Plans',
                     href: '/dashboard/plans',
                     icon: <GrPlan />,
                 },
                 {
-                    id: 4,
+                    id: 22,
                     title: 'Create plans',
                     href: '/dashboard/plans/create',
                     icon: <IoCreateOutline />,
@@ -42,15 +42,35 @@ function SideBar() {
             icon: <IoGitNetworkOutline />,
             subTree: [
                 {
-                    id: 7,
+                    id: 31,
                     title: 'Exercises',
                     href: '/dashboard/exercises',
                     icon: <GrPlan />,
                 },
                 {
-                    id: 5,
+                    id: 32,
                     title: 'Create Exercises',
                     href: '/dashboard/exercises/create',
+                    icon: <IoCreateOutline />,
+                },
+            ],
+        },
+        {
+            id: 4,
+            title: 'Plan Session Workout',
+            open: false,
+            icon: <IoGitNetworkOutline />,
+            subTree: [
+                {
+                    id: 41,
+                    title: 'Sessions Workout',
+                    href: '/dashboard/exercises',
+                    icon: <GrPlan />,
+                },
+                {
+                    id: 42,
+                    title: 'Create Session Workout',
+                    href: '/dashboard/planSessionWorkout/create',
                     icon: <IoCreateOutline />,
                 },
             ],

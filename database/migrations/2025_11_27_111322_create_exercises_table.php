@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Exercise;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,6 +19,7 @@ return new class extends Migration
             $table->string('notes')->nullable();
             $table->text('image');
             $table->text('video')->nullable();
+            $table->enum('level', Exercise::$exerciseLevel)->default('Beginner');
             $table->timestamps();
         });
     }

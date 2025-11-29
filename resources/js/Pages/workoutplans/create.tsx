@@ -1,13 +1,13 @@
 import InputError from '@/Components/InputError';
 import DashboardLayout from '@/Layouts/DashboardLayout';
 import { Textarea } from '@headlessui/react';
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { ChangeEvent } from 'react';
 
 type InputKeyType = 'name' | 'description' | 'sessionsNumber' | 'level' | 'duration';
 
 function create() {
-    // const { props } = usePage().props;
+    const { flush }: any = usePage().props;
     const { post, data, setData, errors, processing } = useForm({
         name: '',
         description: '',
@@ -25,6 +25,14 @@ function create() {
     const handleFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         post('/dashboard/plans/');
+
+        if (flush['success'] != null) {
+            setData('name', '');
+            setData('description', '');
+            setData('sessionsNumber', 1);
+            setData('image', '');
+            setData('duration', 0);
+        }
         // console.log(data.name);
         // console.log(data.description);
         // console.log(data.level);

@@ -12,6 +12,7 @@ class ExerciseController extends Controller
     public function index()
     {
         $exercises = Exercise::all();
+
         return Inertia::render('exercises/index', ['exercises' => $exercises]);
     }
     public function create()

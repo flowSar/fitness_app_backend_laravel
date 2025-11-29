@@ -18,6 +18,7 @@ return new class extends Migration
             $table->boolean('complete')->default(false);
             $table->float('progress')->default(0.0);
             $table->float('duration')->default(0.0);
+            $table->boolean('created')->default(false);
             $table->foreignIdFor(Plan::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

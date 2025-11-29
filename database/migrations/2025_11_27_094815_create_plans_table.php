@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('plans', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
-            $table->string('description');
+            $table->text('description');
             $table->integer('sessions_number')->default(1);
             $table->text('image');
             $table->enum('level', Plan::$planLevel);
