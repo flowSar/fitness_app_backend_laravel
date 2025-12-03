@@ -37,7 +37,8 @@ Route::get("/dashboard/exercises/create", [ExerciseController::class, 'create'])
 Route::post("/dashboard/exercises", [ExerciseController::class, 'store'])->name('dashboard.exercises');
 
 Route::post('/dashboard/planSessionExercises', [PlanSessionExerciseController::class, 'store']);
-
+Route::get('/dashboard/planSessionExercises', [PlanSessionExerciseController::class, 'index']);
 Route::get("/dashboard/planSessionWorkout/create", [PlanSessionExerciseController::class, 'create'])->name('dashboard.planSessionWorkout.create');
 
 require __DIR__ . '/auth.php';
+// require __DIR__ . '/api.php';

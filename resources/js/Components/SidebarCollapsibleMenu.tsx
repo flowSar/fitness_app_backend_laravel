@@ -31,7 +31,9 @@ function SidebarCollapsibleMenu({ menuList = [] }: { menuList: MenuItem[] }) {
                         <div className="flex w-full items-center justify-between p-2 text-start">
                             <div className="flex items-center gap-2">
                                 {item.icon ? item.icon : <></>}
-                                <button className={`font-semibold ${item.open ? '' : ''}`}>{item.title}</button>
+                                <button className={`font-semibold ${item.open ? '' : ''}`}>
+                                    {item.href ? <Link href={item.href}>{item.title}</Link> : item.title}
+                                </button>
                             </div>
 
                             {item.open ? <MdKeyboardArrowDown /> : <MdKeyboardArrowRight />}

@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Exercise;
 use App\Models\PlanSession;
+use App\Models\UserPlan;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('plan_session_exercises', function (Blueprint $table) {
+        Schema::create('user_plan_sessions', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->integer('sets')->default(1);
-            $table->integer('reps')->default(1);
-            $table->float('duration')->default(5);
             $table->foreignIdFor(PlanSession::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Exercise::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(UserPlan::class)->constrained()->cascadeOnDelete();
+            $table->boolean('complete')->default(false);
+            $table->float('progress')->default(0.0);
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('plan_session_exercises');
+        Schema::dropIfExists('user_plan_sessions');
     }
 };

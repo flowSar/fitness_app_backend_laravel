@@ -14,12 +14,23 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
     };
 };
 
-export interface Session {
+export interface SessionInterface {
     id: UUID;
     name: string;
     complete?: boolean;
     progress?: number;
     duration?: number;
+    plan_id?: UUID;
+    session_exercises?: SessionExercises[];
+}
+
+interface SessionExercises {
+    id: UUID;
+    complete: boolean;
+    sets: number;
+    reps: number;
+    duration: number;
+    exercise: ExerciseInterface;
 }
 
 export interface PlanInterafce {
@@ -30,7 +41,7 @@ export interface PlanInterafce {
     image: string;
     duration: number;
     level: String;
-    sessions: Session[];
+    sessions: SessionInterface[];
 }
 
 export interface ExerciseInterface {

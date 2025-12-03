@@ -63,8 +63,8 @@ function SideBar() {
             subTree: [
                 {
                     id: 41,
-                    title: 'Sessions Workout',
-                    href: '/dashboard/exercises',
+                    title: 'Plan Sessions',
+                    href: '/dashboard/planSessionExercises',
                     icon: <GrPlan />,
                 },
                 {

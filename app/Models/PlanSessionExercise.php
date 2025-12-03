@@ -13,4 +13,20 @@ class PlanSessionExercise extends Model
     use HasUuids;
 
     protected $fillable = ['complete', 'sets', 'reps', 'duration', 'plan_session_id', 'exercise_id'];
+
+
+    public function exercise()
+    {
+        return $this->belongsTo(Exercise::class, 'exercise_id');
+    }
+
+    public function session()
+    {
+        return $this->belongsTo(PlanSession::class);
+    }
+
+    public function userPlanSessionExercise()
+    {
+        return $this->belongsToMany(UserPlanSessionExercise::class);
+    }
 }

@@ -13,4 +13,10 @@ class Exercise extends Model
     use HasUuids;
     protected $fillable = ['name', 'description', 'notes', 'image', 'video', 'level'];
     public static array $exerciseLevel = ['Beginner', 'Intermediate', 'Advanced'];
+
+
+    // public function planSessionExercise()
+    // {
+    //     return $this->belongsTo(PlanSessionExercise::class);
+    // }
 }

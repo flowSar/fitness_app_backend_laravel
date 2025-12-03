@@ -70,8 +70,8 @@ class DatabaseSeeder extends Seeder
             Exercise::create($exercise);
         }
 
-        foreach ($plans as $plan) {
-            Plan::create($plan);
-        }
+        // foreach ($plans as $plan) {
+        //     Plan::create($plan);
+        // }
     }
 }

@@ -19,7 +19,7 @@ class PlanSession extends Model
         return $this->belongsTo(Plan::class);
     }
 
-    public function planSessionExercises()
+    public function sessionExercises()
     {
         return $this->hasMany(PlanSessionExercise::class);
     }

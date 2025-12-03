@@ -12,7 +12,12 @@ use Inertia\Inertia;
 class PlanSessionExerciseController extends Controller
 {
 
-    public function index() {}
+    public function index()
+    {
+        $plans = Plan::with('sessions.sessionExercises.exercise')->get();
+        // return response()->json($plans);
+        return Inertia::render('planSessionWorkout/Index', ['plans' => $plans]);
+    }
 
     public function create()
     {
@@ -50,8 +55,8 @@ class PlanSessionExerciseController extends Controller
         $planSession = PlanSession::find($attributes['sessionId']);
         $planSession->created = true;
         $planSession->save();
-        dd($attributes);
-        // PlanSessionExercise::create();
 
+
+        return back()->with('success', "session workout plan created successfully");
     }
 }

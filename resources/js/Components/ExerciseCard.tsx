@@ -5,11 +5,13 @@ function ExerciseCard({ exercise }: { exercise: ExerciseInterface }) {
         <div className="dark:hover:bg-gray-750 group w-[220px] cursor-pointer overflow-hidden rounded-xl bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:bg-black/40 dark:shadow-black/20 dark:hover:shadow-black/30">
             {/* Image */}
             <div className="h-[120px] overflow-hidden">
-                <img
+                <video src={exercise.image} autoPlay loop muted playsInline className="h-full w-full object-cover"></video>
+                {/* <img
                     src={exercise.image}
                     alt={exercise.name}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
+                    className="h-full w-full object-cover"
+                    // className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                /> */}
             </div>
 
             {/* Content */}

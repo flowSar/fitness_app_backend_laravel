@@ -21,7 +21,7 @@ interface ExerciseConfig {
     duration: number;
 }
 
-function Create({ exercises, plans }: { exercises: ExerciseInterface[]; plans: PlanInterafce[] }) {
+function Create({ exercises = [], plans = [] }: { exercises: ExerciseInterface[]; plans: PlanInterafce[] }) {
     const { flush }: any = usePage().props;
 
     const [selectedExercises, setSelectedExercises] = useState<ExerciseInterface[]>([]);
@@ -29,7 +29,7 @@ function Create({ exercises, plans }: { exercises: ExerciseInterface[]; plans: P
 
     const [selectedPlan, setSelectedPlan] = useState<PlanInterafce>(plans[0]);
 
-    const [selectedSessionId, setSelectedSessionId] = useState<string>(plans[0].sessions[0].id);
+    const [selectedSessionId, setSelectedSessionId] = useState<string>(plans[0].sessions[0] ? plans[0].sessions[0].id : '');
 
     const dialogRef = useRef<HTMLDialogElement>(null);
 
