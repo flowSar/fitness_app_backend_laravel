@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\V1\PlanResource;
+use App\Http\Resources\V1\UserPlanResource;
 use App\Models\Plan;
 use App\Models\UserPlan;
 use App\Models\UserPlanSession;
@@ -15,13 +15,20 @@ use Illuminate\Support\Facades\Auth;
 class UserPlanController extends Controller
 {
     use ApiResponse;
+
+    protected $extends = [
+        'userPlanSessions',
+        'userPlanSessions.userSessionExercises',
+        'userPlanSessions.userSessionExercises.planSessionExercise',
+        'userPlanSessions.userSessionExercises.planSessionExercise.exercise',
+    ];
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $plans = UserPlan::all();
-        return PlanResource::collection($plans);
+        return UserPlanResource::collection($plans);
     }
 
     /**
@@ -63,23 +70,35 @@ class UserPlanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(UserPlan $userplan)
+    public function show(Request $request, UserPlan $userplan)
     {
-
-
-        $userplan->load('userPlanSessions.userSessionExercises.planSessionExercise.exercise');
-
-        return new PlanResource($userplan);
-        dd($planSessions);
-        // return new PlanResource($planSessions);
+        return new UserPlanResource($userplan);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, UserPlan $userplan)
     {
-        //
+
+        $attributes = $request->validate([
+            'complete' => ['boolean'],
+            'progress' => ['numeric'],
+        ]);
+
+        $result = $userplan->update($attributes);
+        if (!$result) {
+            return Response()->json([
+                'success' => false,
+                'message' => 'update plan failed'
+            ]);
+        }
+        return Response()->json([
+            'success' => true,
+            'date' => [
+                'plan' => $userplan,
+            ],
+        ]);
     }
 
     /**

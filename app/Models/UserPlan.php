@@ -12,6 +12,8 @@ class UserPlan extends Model
 
     protected $fillable = ['plan_id', 'user_id', 'complete', 'progress'];
 
+
+
     public function user()
     {
         return $this->belongsTo(User::class);

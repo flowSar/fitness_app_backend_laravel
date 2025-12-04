@@ -16,8 +16,8 @@ class PlanSessionExerciseResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
-            'id' => $this->id,
-            'complete' => $this->complete,
+            'planSessionExercseId' => $this->id,
+
             'sets' => $this->sets,
             'reps' => $this->reps,
             'duration' => $this->duration,

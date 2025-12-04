@@ -4,6 +4,8 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\ExerciseController;
 use App\Http\Controllers\Api\V1\PlanController;
 use App\Http\Controllers\Api\V1\UserPlanController;
+use App\Http\Controllers\Api\V1\UserPlanSessionController;
+use App\Http\Controllers\Api\V1\UserPlanSessionExerciseController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -23,6 +25,10 @@ Route::get('/exercises/{exercise}', [ExerciseController::class, 'show'])->name('
 Route::get('/user/plans', [PlanController::class, 'index'])->name('plans.index');
 Route::post('/user/plans/{plan}/create', [UserPlanController::class, 'create']);
 Route::get('/user/plans/{userplan}', [UserPlanController::class, 'show'])->name('api.user.plans.show');
+Route::put('/user/plans/{userplan}', [UserPlanController::class, 'update'])->name('api.plans.update');
 
 
 //sessions
+Route::put('/user/plans/session/{userplansession}', [UserPlanSessionController::class, 'update'])->name('api.plans.session.update');
+
+Route::put('/user/plans/session/exercise/{userplansessionexercise}', [UserPlanSessionExerciseController::class, 'update'])->name('api.plans.session.exercise.update');
