@@ -33,8 +33,8 @@ class AuthController extends Controller
         if (!$user) {
             return $this->error('register failed', []);
         }
-
-        return $this->success('user registered successfulyl', ['user' => $user, 'token' => $user->createToken('apiTokenFor' . $user->name)]);
+        $token = $user->createToken('apiTokenFor' . $user->name)->plainTextToken;
+        return $this->success('user registered successfulyl', ['user' => $user, 'token' => $token]);
     }
 
     public function login(LoginRequest $request)
@@ -50,12 +50,18 @@ class AuthController extends Controller
 
         return $this->ok('Authenticated', [
             'token' => $user->createToken('Api token for ' . $user->email, ['*'], now()->addMonth())->plainTextToken,
+            'user' => $user,
         ]);
     }
 
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
-        return $this->ok('logged out', []);
+        return $this->ok('logged out', ['success' => true]);
+    }
+
+    public function validateToken(Request $request)
+    {
+        return $this->ok('token is valid', data: ['user' => $request->user()]);
     }
 }

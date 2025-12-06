@@ -23,4 +23,9 @@ class PlanSession extends Model
     {
         return $this->hasMany(PlanSessionExercise::class);
     }
+
+    public function userPlanSession()
+    {
+        return $this->hasMany(UserPlanSession::class);
+    }
 }

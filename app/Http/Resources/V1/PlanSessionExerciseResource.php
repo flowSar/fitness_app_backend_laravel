@@ -21,7 +21,7 @@ class PlanSessionExerciseResource extends JsonResource
             'sets' => $this->sets,
             'reps' => $this->reps,
             'duration' => $this->duration,
-            'exerciseId' => $this->exercise->id,
+            'id' => $this->exercise->id,
             'name' => $this->exercise->name,
             'description' => $this->exercise->description,
             'notes' => $this->exercise->notes,

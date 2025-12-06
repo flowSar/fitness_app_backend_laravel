@@ -20,4 +20,9 @@ class Plan extends Model
     {
         return $this->hasMany(PlanSession::class);
     }
+
+    public function userPlan()
+    {
+        return $this->hasMany(UserPlan::class);
+    }
 }

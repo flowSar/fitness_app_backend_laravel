@@ -16,7 +16,7 @@ class UserPlanSession extends Model
         return $this->belongsTo(UserPlan::class);
     }
 
-    public function session()
+    public function planSession()
     {
         return $this->belongsTo(PlanSession::class);
     }
@@ -24,5 +24,10 @@ class UserPlanSession extends Model
     public function userSessionExercises()
     {
         return $this->hasMany(UserPlanSessionExercise::class);
+    }
+
+    public function completeExerciseCount()
+    {
+        return $this->userSessionExercises->where('complete', true)->count();
     }
 }

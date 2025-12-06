@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\SimplePlanResource;
 use App\Http\Resources\V1\UserPlanResource;
 use App\Models\Plan;
 use App\Models\UserPlan;
@@ -27,8 +28,10 @@ class UserPlanController extends Controller
      */
     public function index()
     {
-        $plans = UserPlan::all();
-        return UserPlanResource::collection($plans);
+        $plans = UserPlan::with('plan')->get();
+        // return response()->json($plans);
+        return SimplePlanResource::collection($plans);
+        // return UserPlanResource::collection($plans);
     }
 
     /**
@@ -70,7 +73,7 @@ class UserPlanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, UserPlan $userplan)
+    public function show(UserPlan $userplan)
     {
         return new UserPlanResource($userplan);
     }

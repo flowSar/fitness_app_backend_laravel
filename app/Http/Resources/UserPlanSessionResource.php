@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\V1;
+namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserPlanSessionExerciseResource extends JsonResource
+class UserPlanSessionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,8 +17,10 @@ class UserPlanSessionExerciseResource extends JsonResource
         // return parent::toArray($request);
         return [
             'id' => $this->id,
+            'name' => $this->planSession->name,
             'complete' => (bool) $this->complete,
-            'exercise' => new PlanSessionExerciseResource($this->planSessionExercise),
+            'progress' => $this->progress,
+            'planId' => $this->user_plan_id,
         ];
     }
 }

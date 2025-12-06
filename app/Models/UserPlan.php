@@ -19,6 +19,11 @@ class UserPlan extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function plan()
+    {
+        return $this->belongsTo(Plan::class);
+    }
+
     public function userPlanSessions()
     {
         return $this->hasMany(UserPlanSession::class);
