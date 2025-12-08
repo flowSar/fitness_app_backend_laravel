@@ -12,8 +12,8 @@ class UserPlanSessionController extends Controller
 {
     public function index(UserPlan $userplan)
     {
-        // ->where('user_plan_id', $userplan->id)->get()
-        $userPlanSessions = UserPlanSession::with('planSession')->get();
+        // $userPlanSessions = UserPlanSession::with('planSession')->where('user_plan_id', $userplan->id)->get();
+        $userPlanSessions = $userplan->userPlanSessions;
         return UserPlanSessionResource::collection($userPlanSessions);
     }
     public function update(Request $request, UserPlan $userplan, UserPlanSession $userplansession)

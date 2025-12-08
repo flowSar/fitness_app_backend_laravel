@@ -26,9 +26,11 @@ class UserPlanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $plans = UserPlan::with('plan')->get();
+
+        $plans = UserPlan::with('plan')->where('user_id', $request->user()->id)->get();
+
         // return response()->json($plans);
         return SimplePlanResource::collection($plans);
         // return UserPlanResource::collection($plans);
@@ -37,18 +39,17 @@ class UserPlanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function create(Plan $plan)
+    public function create(Request $request, Plan $plan)
     {
+
         // create user plan
         $userPlan = UserPlan::create([
             'plan_id' => $plan->id,
-            // 'user_id' => Auth::user()->id,
-            'user_id' => 3,
+            'user_id' => $request->user()->id,
         ]);
 
         // create user plan sessions
         $planSessions = $plan->sessions;
-
 
 
         foreach ($planSessions as $session) {
@@ -67,7 +68,8 @@ class UserPlanController extends Controller
             }
         }
 
-        return $this->ok('created successfully');
+        // return $this->ok('created successfully');
+        return new SimplePlanResource($userPlan);
     }
 
     /**

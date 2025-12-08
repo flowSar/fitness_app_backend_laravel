@@ -28,4 +28,9 @@ class UserPlan extends Model
     {
         return $this->hasMany(UserPlanSession::class);
     }
+
+    public function completedSessionsCount()
+    {
+        return $this->userPlanSessions->where('complete', true)->count();
+    }
 }

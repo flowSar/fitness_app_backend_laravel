@@ -15,6 +15,15 @@ class PlanResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        // return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'sessionNumber' => $this->sessions_number,
+            'image' => $this->image,
+            'level' => $this->level,
+            'duration' => $this->duration,
+        ];
     }
 }

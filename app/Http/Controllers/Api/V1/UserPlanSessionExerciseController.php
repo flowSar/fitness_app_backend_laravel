@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\UserPlanSessionExerciseResource;
+use App\Http\Services\Api\V1\ProgressService;
 use App\Models\UserPlanSession;
 use App\Models\UserPlanSessionExercise;
 use Illuminate\Http\Request;
@@ -18,29 +19,36 @@ class UserPlanSessionExerciseController extends Controller
         // return Response()->json($userPlanSessionExercises);
         return UserPlanSessionExerciseResource::collection($userPlanSessionExercises);
     }
-    public function update(Request $request, UserPlanSessionExercise $userplansessionexercise)
+    public function update(Request $request, UserPlanSessionExercise $userplansessionexercise, ProgressService $progressService)
     {
         $request->validate([
             'complete' => ['boolean'],
         ]);
 
 
-        $userplansessionexercise->complete = true;
-        $userplansessionexercise->save();
-        if (!$userplansessionexercise->save()) {
-            return response()->json([
-                'success' => false,
-            ], 500);
-        }
+        $userplansessionexercise = $progressService->completeExercise($userplansessionexercise);
 
-        //calculete the progress of the session each time exercise completed
+        // // preent recomplete
+        // if ($userplansessionexercise->complete) {
+        //     return new UserPlanSessionExerciseResource($userplansessionexercise);
+        // }
 
-        $userPlanSession = $userplansessionexercise->userPlanSession;
-        $totalExercises = $userPlanSession->userSessionExercises()->count();
-        $progress = ($userPlanSession->completeExerciseCount() / $totalExercises) * 100;
+        // $userplansessionexercise->complete = true;
+        // $userplansessionexercise->save();
+        // if (!$userplansessionexercise->save()) {
+        //     return response()->json([
+        //         'success' => false,
+        //     ], 500);
+        // }
 
-        $userPlanSession->progress = $progress;
-        $userPlanSession->save();
+        // //calculete the progress of the session each time exercise completed
+
+        // $userPlanSession = $userplansessionexercise->userPlanSession;
+        // $totalExercises = $userPlanSession->userSessionExercises()->count();
+        // $progress = ($userPlanSession->completeExerciseCount() / $totalExercises) * 100;
+
+        // $userPlanSession->progress = $progress;
+        // $userPlanSession->save();
 
         return new UserPlanSessionExerciseResource($userplansessionexercise);
     }
