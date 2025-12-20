@@ -1,20 +1,21 @@
 import InputError from '@/Components/InputError';
 import DashboardLayout from '@/Layouts/DashboardLayout';
+import { ExerciseInterface } from '@/types';
 import { Textarea } from '@headlessui/react';
 import { useForm, usePage } from '@inertiajs/react';
 import { ChangeEvent, useEffect } from 'react';
 
 type InputKeyType = 'name' | 'description' | 'notes' | 'level' | 'video' | 'image';
 
-function create() {
+function Edit({ exercise }: { exercise: ExerciseInterface }) {
     const { flush }: any = usePage().props;
-    const { post, data, setData, errors, processing } = useForm({
-        name: '',
-        description: '',
-        notes: '',
-        image: '',
-        video: '',
-        level: 'Beginner',
+    const { put, data, setData, errors, processing } = useForm({
+        name: exercise.name,
+        description: exercise.description,
+        notes: exercise.notes,
+        image: exercise.image,
+        video: exercise.video,
+        level: exercise.level,
     });
 
     const handleInputvalueChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -24,16 +25,12 @@ function create() {
 
     const handleFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
-        post('/dashboard/exercises');
+        put(`/dashboard/exercises/${exercise.id}`);
     };
 
     useEffect(() => {
         if (flush?.success) {
-            setData('name', '');
-            setData('description', '');
-            setData('notes', '');
-            setData('image', '');
-            setData('video', '');
+            alert('update succeed');
         }
     }, [flush]);
 
@@ -125,7 +122,7 @@ function create() {
                         <input
                             disabled={processing}
                             type="submit"
-                            value={'create'}
+                            value={'Update'}
                             className="cursor-pointer rounded-lg px-8 py-3 duration-200 dark:bg-white/10 dark:text-white dark:hover:bg-white/15"
                         />
                     </div>
@@ -140,4 +137,4 @@ function create() {
     );
 }
 
-export default create;
+export default Edit;

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\SimplePlanResource;
 use App\Http\Resources\V1\UserPlanResource;
 use App\Models\Plan;
+use App\Models\PlanSessionExercise;
 use App\Models\UserPlan;
 use App\Models\UserPlanSession;
 use App\Models\UserPlanSessionExercise;
@@ -112,5 +113,62 @@ class UserPlanController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+
+    public function store(Request $request)
+    {
+        // dd($request->all());
+        $attributes = $request->validate([
+            'name' => ['required', 'min:3', 'max:255'],
+            'visibility' => ['required', 'bool'],
+            'exercises' => ['required', 'array'],
+        ]);
+
+        $plan = Plan::create([
+            'name' => $attributes['name'],
+            'description' => 'user plane',
+            'image' => 'https://www.crunch.com.au/wp-content/uploads/2019/01/women-tredmill.png',
+            'level' => Plan::$planLevel[0],
+            'type' => 'single_session',
+        ]);
+
+        $userPlan = UserPlan::create([
+            'plan_id' => $plan->id,
+            // 'user_id' => 2,
+            'user_id' => $request->user()->id,
+        ]);
+
+        $session = $plan->sessions()->create([
+            'plan_id' => $plan->id,
+            'name' => 'Day 1',
+        ]);
+        // dd('here', $session->id);
+        $userSession = $userPlan->userPlanSessions()->create([
+            'user_plan_id' => $userPlan->id,
+            'plan_session_id' => $session->id,
+        ]);
+
+        $workoutDuration = 0;
+        foreach ($attributes['exercises'] as $exerciseId) {
+            $planSessionExercises = PlanSessionExercise::create([
+                'plan_session_id' => $session->id,
+                'sets' => $exerciseId['sets'] ?? 1,
+                'reps' => $exerciseId['reps'] ?? 1,
+                'duration' => $exerciseId['duration'] ?? 0,
+                'exercise_id' => $exerciseId['id'],
+            ]);
+            $workoutDuration += $planSessionExercises->duration + 10; // adding 10 seconds rest between exercises
+
+            $userSessionExercises = $userSession->userSessionExercises()->create([
+                'plan_session_exercise_id' => $planSessionExercises->id,
+                'complete' => false,
+            ]);
+        }
+
+        $plan->duration = $workoutDuration - 10; // removing last rest time
+        $plan->save();
+
+        return new SimplePlanResource($userPlan);
     }
 }

@@ -14,6 +14,7 @@ class ExerciseController extends Controller
      */
     public function index()
     {
+
         $exercises = Exercise::all();
         return ExerciseResource::collection($exercises);
     }

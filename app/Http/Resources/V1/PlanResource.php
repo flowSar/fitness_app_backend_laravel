@@ -24,6 +24,8 @@ class PlanResource extends JsonResource
             'image' => $this->image,
             'level' => $this->level,
             'duration' => $this->duration,
+            'type' => $this->type,
+            // 'category' => $this->category
         ];
     }
 }

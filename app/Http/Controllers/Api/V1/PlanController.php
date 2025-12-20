@@ -12,9 +12,11 @@ class PlanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $plans = Plan::all();
+        $filters = $request->only(['type', 'category']);
+
+        $plans = Plan::where($filters)->get();
         return PlanResource::collection($plans);
     }
 }

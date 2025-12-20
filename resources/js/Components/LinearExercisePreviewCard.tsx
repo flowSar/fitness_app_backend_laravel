@@ -9,8 +9,11 @@ function LinearExercisePreviewCard({ exercise }: { exercise: ExerciseInterface }
             <div className="flex flex-col md:flex-row">
                 {/* Image Section */}
                 <div className="relative h-[120px] w-full flex-shrink-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 md:h-[150px] md:w-[240px]">
-                    <video src={exercise.image} autoPlay loop muted playsInline className="h-full w-full object-cover"></video>
-                    {/* <img src={exercise.image} alt="exercise image" className="h-full w-full object-cover" /> */}
+                    {exercise.image.includes('mp4') ? (
+                        <video src={exercise.image} autoPlay muted playsInline className="h-full w-full object-cover"></video>
+                    ) : (
+                        <img src={exercise.image} alt="exercise image" className="h-full w-full object-cover" />
+                    )}
                 </div>
 
                 {/* Content Section */}
@@ -21,6 +24,10 @@ function LinearExercisePreviewCard({ exercise }: { exercise: ExerciseInterface }
                         <p className="text-sm leading-relaxed text-zinc-400">
                             {exercise.description.length > 200 ? `${exercise.description.substring(0, 100)}...` : exercise.description}
                         </p>
+                        <div className="flex space-x-2">
+                            <h3>Level:</h3>
+                            <span>{exercise.level}</span>
+                        </div>
                     </div>
                 </div>
             </div>

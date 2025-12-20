@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('image');
             $table->enum('level', Plan::$planLevel);
             $table->float('duration')->default(0.0);
+            $table->enum('type', ['single_session', 'multi_session']);
             $table->timestamps();
         });
     }

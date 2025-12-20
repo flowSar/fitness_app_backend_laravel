@@ -1,4 +1,5 @@
 import { PlanInterafce } from '@/types';
+import { Link } from '@inertiajs/react';
 
 function PlanCard({ plan }: { plan: PlanInterafce }) {
     return (
@@ -21,8 +22,12 @@ function PlanCard({ plan }: { plan: PlanInterafce }) {
                     <div>Level: {plan.level}</div>
                 </div>
                 <div className="mt-4 flex gap-4">
-                    <button className="rounded-lg bg-green-500 px-4 py-2 font-bold text-white">Edit</button>
-                    <button className="rounded-lg bg-red-500 px-4 py-2 font-bold text-white">Delete</button>
+                    <Link href={`/dashboard/plans/${plan.id}/edit`} className="rounded-lg bg-green-500 px-4 py-2 font-bold text-white">
+                        Edit
+                    </Link>
+                    <Link href={`/dashboard/plans/${plan.id}`} method="delete" className="rounded-lg bg-red-500 px-4 py-2 font-bold text-white">
+                        Delete
+                    </Link>
                 </div>
             </div>
         </div>

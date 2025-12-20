@@ -1,7 +1,6 @@
 import ExerciseSelectDialog from '@/Components/ExerciseSelectDialog';
 import InputError from '@/Components/InputError';
 import LinearExerciseCard from '@/Components/LinearExerciseCard';
-import useSelectedExercise from '@/hooks/useSelectedExercise';
 import DashboardLayout from '@/Layouts/DashboardLayout';
 import { ExerciseInterface, PlanInterafce } from '@/types';
 import { useForm, usePage } from '@inertiajs/react';
@@ -26,13 +25,13 @@ function Create({ exercises = [], plans = [] }: { exercises: ExerciseInterface[]
     console.log('plans: ', plans[4].sessions);
     const { flush }: any = usePage().props;
 
-    // const [selectedExercises, setSelectedExercises] = useState<ExerciseInterface[]>([]);
-    // const [selectedExercisesConfig, setSelectedExercisesConfig] = useState<ExerciseConfig[]>([]);
-    const { selectedExercises, selectedExercisesConfig, setSelectedExercises, setSelectedExercisesConfig, setSelectedIds }: any =
-        useSelectedExercise(exercises);
+    const [selectedExercises, setSelectedExercises] = useState<ExerciseInterface[]>([]);
+    const [selectedExercisesConfig, setSelectedExercisesConfig] = useState<ExerciseConfig[]>([]);
 
     const [selectedPlan, setSelectedPlan] = useState<PlanInterafce>(plans[0]);
+
     const [selectedSessionId, setSelectedSessionId] = useState<string>(plans[0].sessions[0] ? plans[0].sessions[0].id : '');
+
     const dialogRef = useRef<HTMLDialogElement>(null);
 
     const { post, data, setData, errors, processing } = useForm({
@@ -47,8 +46,41 @@ function Create({ exercises = [], plans = [] }: { exercises: ExerciseInterface[]
     };
 
     const handleSelectedExercises = (ids: string[]) => {
-        setSelectedIds(ids);
-        setSelectedExercises(() => [...selectedExercises]);
+        const selected = exercises.filter((exercise) => ids.includes(exercise.id));
+        setSelectedExercises(() => [...selected]);
+
+        if (selectedExercisesConfig.length === 0) {
+            const selectedConfig = selected.map((exercise) => {
+                return {
+                    id: exercise.id,
+                    sets: 1,
+                    reps: 1,
+                    duration: 0,
+                };
+            });
+            setSelectedExercisesConfig([...selectedConfig]);
+        } else {
+            // first filter remove unselected
+            const newSelectedConfig = selectedExercisesConfig.filter((e) => ids.includes(e.id));
+            // compase and insert if the last selected
+
+            if (selected.length !== newSelectedConfig.length) {
+                newSelectedConfig.push({
+                    id: ids[ids.length - 1],
+                    sets: 1,
+                    reps: 1,
+                    duration: 0,
+                });
+            }
+
+            setSelectedExercisesConfig([...newSelectedConfig]);
+
+            // insert new selectedExercisesList
+            setData(
+                'exercises',
+                newSelectedConfig.map((config) => JSON.stringify(config)),
+            );
+        }
     };
 
     const openDialog = () => {
@@ -56,21 +88,24 @@ function Create({ exercises = [], plans = [] }: { exercises: ExerciseInterface[]
     };
 
     const handlePlanSelect = (e: ChangeEvent<HTMLSelectElement>) => {
+        console.log('fuck');
         const planId = e.target.value;
         const plan = plans.filter((plan) => plan.id === planId);
-
+        console.log('plans: ', plan.length, plan, planId);
         setSelectedPlan(plan[0]);
         setSelectedSessionId(plan[0].sessions[0].id);
+        setData('sessionId', plan[0].sessions[0].id);
+        setData('planId', plan[0].id);
     };
 
-    const handExerciseConfigChange = ({ id, sets, reps, duration }: ExerciseConfig) => {
+    const handExerciseConfigChnage = ({ id, sets, reps, duration }: ExerciseConfig) => {
         const exerConfig = {
             id,
             sets,
             reps,
             duration,
         };
-        const newExercisesConfig = selectedExercisesConfig.map((config: ExerciseConfig) => {
+        const newExercisesConfig = selectedExercisesConfig.map((config) => {
             if (config.id === exerConfig.id) {
                 return exerConfig;
             }
@@ -79,7 +114,7 @@ function Create({ exercises = [], plans = [] }: { exercises: ExerciseInterface[]
         setSelectedExercisesConfig([...newExercisesConfig]);
         setData(
             'exercises',
-            newExercisesConfig.map((config: ExerciseConfig) => JSON.stringify(config)),
+            newExercisesConfig.map((config) => JSON.stringify(config)),
         );
     };
 
@@ -87,9 +122,7 @@ function Create({ exercises = [], plans = [] }: { exercises: ExerciseInterface[]
         if (flush?.success) {
             setSelectedExercisesConfig([]);
         }
-        setData('sessionId', selectedSessionId);
-        setData('planId', selectedPlan.id);
-    }, [flush, selectedPlan, selectedSessionId]);
+    }, [flush]);
 
     return (
         <DashboardLayout>
@@ -131,8 +164,8 @@ function Create({ exercises = [], plans = [] }: { exercises: ExerciseInterface[]
                             })}
                         </select>
                     </div>
-                    {selectedExercises.map((exercise: ExerciseInterface) => (
-                        <LinearExerciseCard key={exercise.id} exercise={exercise} exerciseConfigChange={handExerciseConfigChange} />
+                    {selectedExercises.map((exercise) => (
+                        <LinearExerciseCard key={exercise.id} exercise={exercise} exerciseConfigChange={handExerciseConfigChnage} />
                     ))}
                     <InputError message={errors.exercises} className="mt-2" />
                     <div onClick={openDialog} className="mt-6 cursor-pointer border-2 border-dotted border-red-400 px-4 py-3 text-center">

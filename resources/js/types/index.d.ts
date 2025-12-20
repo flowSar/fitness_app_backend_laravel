@@ -26,6 +26,12 @@ export interface SessionInterface {
 
 interface SessionExercises {
     id: UUID;
+    name: string;
+    description: string;
+    notes: string;
+    image: string;
+    video: string;
+    level: string;
     complete: boolean;
     sets: number;
     reps: number;
@@ -37,10 +43,11 @@ export interface PlanInterafce {
     id: UUID;
     name: string;
     description: string;
-    sessionsNumber: number;
+    sessions_number: number;
     image: string;
     duration: number;
-    level: String;
+    level: string;
+    category: string;
     sessions: SessionInterface[];
 }
 

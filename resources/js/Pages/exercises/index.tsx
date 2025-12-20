@@ -1,8 +1,17 @@
 import ExerciseCard from '@/Components/ExerciseCard';
 import DashboardLayout from '@/Layouts/DashboardLayout';
 import { ExerciseInterface } from '@/types';
+import { usePage } from '@inertiajs/react';
+import { useEffect } from 'react';
 
 function index({ exercises }: { exercises: ExerciseInterface[] }) {
+    const { flush }: any = usePage().props;
+
+    useEffect(() => {
+        if (flush?.success) {
+            alert('deleted successfully');
+        }
+    }, [flush]);
     return (
         <DashboardLayout>
             <header className="flex h-16 items-center justify-center rounded-lg text-2xl font-bold dark:bg-black/30">Exercises</header>

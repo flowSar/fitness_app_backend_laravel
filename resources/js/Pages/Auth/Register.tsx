@@ -26,6 +26,16 @@ export default function Register() {
         <GuestLayout>
             <Head title="Register" />
 
+            {/* Logo/Brand */}
+            <div className="mb-8 text-center">
+                <Link href="/">
+                    <h1 className="mb-2 text-4xl font-bold text-white">
+                        w.<span className="text-emerald-600">all</span>Fit
+                    </h1>
+                </Link>
+                <p className="text-gray-400">Start your fitness journey today</p>
+            </div>
+
             <form onSubmit={submit}>
                 <div>
                     <InputLabel htmlFor="name" value="Name" />
@@ -44,7 +54,7 @@ export default function Register() {
                     <InputError message={errors.name} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-5">
                     <InputLabel htmlFor="email" value="Email" />
 
                     <TextInput
@@ -61,7 +71,7 @@ export default function Register() {
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-5">
                     <InputLabel htmlFor="password" value="Password" />
 
                     <TextInput
@@ -78,11 +88,8 @@ export default function Register() {
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
-                    <InputLabel
-                        htmlFor="password_confirmation"
-                        value="Confirm Password"
-                    />
+                <div className="mt-5">
+                    <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
 
                     <TextInput
                         id="password_confirmation"
@@ -91,31 +98,30 @@ export default function Register() {
                         value={data.password_confirmation}
                         className="mt-1 block w-full"
                         autoComplete="new-password"
-                        onChange={(e) =>
-                            setData('password_confirmation', e.target.value)
-                        }
+                        onChange={(e) => setData('password_confirmation', e.target.value)}
                         required
                     />
 
-                    <InputError
-                        message={errors.password_confirmation}
-                        className="mt-2"
-                    />
+                    <InputError message={errors.password_confirmation} className="mt-2" />
                 </div>
 
-                <div className="mt-4 flex items-center justify-end">
-                    <Link
-                        href={route('login')}
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-                    >
+                <div className="mt-6 flex items-center justify-between">
+                    <Link href={route('login')} className="text-sm font-medium text-emerald-600 transition-colors hover:text-emerald-500">
                         Already registered?
                     </Link>
 
                     <PrimaryButton className="ms-4" disabled={processing}>
-                        Register
+                        {processing ? 'Creating account...' : 'Register'}
                     </PrimaryButton>
                 </div>
             </form>
+
+            {/* Back to home */}
+            <div className="mt-6 text-center">
+                <Link href="/" className="text-sm text-gray-400 transition-colors hover:text-emerald-600">
+                    ← Back to home
+                </Link>
+            </div>
         </GuestLayout>
     );
 }

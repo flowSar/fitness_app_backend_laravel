@@ -25,6 +25,7 @@ class SimplePlanResource extends JsonResource
             'sessionsNumber' => $this->plan->sessions_number,
             'complete' => (bool) $this->complete,
             'progress' => (float) $this->progress,
+            'type' => $this->plan->type,
         ];
     }
 }

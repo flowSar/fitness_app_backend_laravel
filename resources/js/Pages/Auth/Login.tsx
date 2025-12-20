@@ -7,13 +7,7 @@ import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
-export default function Login({
-    status,
-    canResetPassword,
-}: {
-    status?: string;
-    canResetPassword: boolean;
-}) {
+export default function Login({ status, canResetPassword }: { status?: string; canResetPassword: boolean }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -32,11 +26,17 @@ export default function Login({
         <GuestLayout>
             <Head title="Log in" />
 
-            {status && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    {status}
-                </div>
-            )}
+            {/* Logo/Brand */}
+            <div className="mb-8 text-center">
+                <Link href="/">
+                    <h1 className="mb-2 text-4xl font-bold text-white">
+                        w.<span className="text-emerald-600">all</span>Fit
+                    </h1>
+                </Link>
+                <p className="text-gray-400">Welcome back to your fitness journey</p>
+            </div>
+
+            {status && <div className="mb-4 rounded-lg bg-emerald-900/20 p-3 text-sm font-medium text-emerald-600">{status}</div>}
 
             <form onSubmit={submit}>
                 <div>
@@ -56,7 +56,7 @@ export default function Login({
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-5">
                     <InputLabel htmlFor="password" value="Password" />
 
                     <TextInput
@@ -72,39 +72,49 @@ export default function Login({
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
-                <div className="mt-4 block">
+                <div className="mt-5 flex items-center justify-between">
                     <label className="flex items-center">
                         <Checkbox
                             name="remember"
                             checked={data.remember}
-                            onChange={(e) =>
-                                setData(
-                                    'remember',
-                                    (e.target.checked || false) as false,
-                                )
-                            }
+                            onChange={(e) => setData('remember', (e.target.checked || false) as false)}
                         />
-                        <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">
-                            Remember me
-                        </span>
+                        <span className="ms-2 text-sm text-gray-400">Remember me</span>
                     </label>
-                </div>
 
-                <div className="mt-4 flex items-center justify-end">
                     {canResetPassword && (
                         <Link
                             href={route('password.request')}
-                            className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
+                            className="text-sm font-medium text-emerald-600 transition-colors hover:text-emerald-500"
                         >
-                            Forgot your password?
+                            Forgot password?
                         </Link>
                     )}
+                </div>
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
+                <div className="mt-6">
+                    <PrimaryButton className="w-full justify-center" disabled={processing}>
+                        {processing ? 'Logging in...' : 'Log in'}
                     </PrimaryButton>
                 </div>
             </form>
+
+            {/* Sign up link */}
+            <div className="mt-6 text-center">
+                <p className="text-sm text-gray-400">
+                    Don't have an account?{' '}
+                    <Link href={route('register')} className="font-medium text-emerald-600 transition-colors hover:text-emerald-500">
+                        Sign up
+                    </Link>
+                </p>
+            </div>
+
+            {/* Back to home */}
+            <div className="mt-6 text-center">
+                <Link href="/" className="text-sm text-gray-400 transition-colors hover:text-emerald-600">
+                    ← Back to home
+                </Link>
+            </div>
         </GuestLayout>
     );
 }

@@ -1,12 +1,20 @@
 import { ExerciseInterface } from '@/types';
 import { useState } from 'react';
 import { FaSquareMinus, FaSquarePlus } from 'react-icons/fa6';
+import IconButton from './IconButton';
 
 type keyTypes = 'sets' | 'reps' | 'duration';
 
+interface ExerciseConfid {
+    id: string;
+    sets: number;
+    reps: number;
+    duration: number;
+}
+
 interface LinearExerciseCardProps {
     exercise: ExerciseInterface;
-    exerciseConfigChange: ({ id, sets, reps, duration }: { id: string; sets: number; reps: number; duration: number }) => void;
+    exerciseConfigChange: ({ id, sets, reps, duration }: ExerciseConfid) => void;
 }
 
 function LinearExerciseCard({ exercise, exerciseConfigChange }: LinearExerciseCardProps) {
@@ -16,24 +24,28 @@ function LinearExerciseCard({ exercise, exerciseConfigChange }: LinearExerciseCa
         duration: 0,
     });
 
-    const handExerciseConfigChange = (key: keyTypes, oper: string) => {
-        if (oper === '+') {
-            setExerciseConfig((old) => {
-                const newConfig = { ...old, [key]: old[key] + 1 };
-                exerciseConfigChange({ ...newConfig, id: exercise.id });
-                return newConfig;
-            });
-        } else if (oper === '-') {
-            setExerciseConfig((old) => {
-                if (old[key] <= 1) {
-                    return old;
-                }
-                const newConfig = { ...old, [key]: old[key] - 1 };
-                exerciseConfigChange({ ...newConfig, id: exercise.id });
-                return newConfig;
-            });
-        }
+    const increment = (key: keyTypes) => {
+        setExerciseConfig((old) => {
+            const newConfig = { ...old, [key]: old[key] + 1 };
+            exerciseConfigChange({ ...newConfig, id: exercise.id });
+            return newConfig;
+        });
     };
+
+    const decrement = (key: keyTypes) => {
+        setExerciseConfig((old) => {
+            if (old[key] <= 0 && key === 'duration') {
+                return old;
+            }
+            if (old[key] <= 1 && key !== 'duration') {
+                return old;
+            }
+            const newConfig = { ...old, [key]: old[key] - 1 };
+            exerciseConfigChange({ ...newConfig, id: exercise.id });
+            return newConfig;
+        });
+    };
+
     return (
         <div
             key={exercise.id}
@@ -57,43 +69,18 @@ function LinearExerciseCard({ exercise, exerciseConfigChange }: LinearExerciseCa
 
                     {/* Controls Section */}
                     <div className="flex flex-wrap gap-4 md:gap-6">
-                        {/* Sets */}
-                        <div className="flex flex-col gap-1">
-                            <span className="text-xs font-medium uppercase tracking-wide text-zinc-500">Sets</span>
-                            <div className="flex items-center gap-2">
-                                <button
-                                    className="text-blue-400 transition-colors hover:text-blue-300"
-                                    onClick={() => handExerciseConfigChange('sets', '-')}
-                                >
-                                    <FaSquareMinus size={28} />
-                                </button>
-                                <span className="min-w-[32px] text-center text-lg font-semibold text-white">{exerciseConfig.sets}</span>
-                                <button
-                                    className="text-blue-400 transition-colors hover:text-blue-300"
-                                    onClick={() => handExerciseConfigChange('sets', '+')}
-                                >
-                                    <FaSquarePlus size={28} />
-                                </button>
-                            </div>
-                        </div>
-
                         {/* Reps */}
                         <div className="flex flex-col gap-1">
                             <span className="text-xs font-medium uppercase tracking-wide text-zinc-500">Reps</span>
                             <div className="flex items-center gap-2">
-                                <button
-                                    className="text-blue-400 transition-colors hover:text-blue-300"
-                                    onClick={() => handExerciseConfigChange('reps', '-')}
-                                >
+                                <IconButton onClick={() => decrement('reps')}>
                                     <FaSquareMinus size={28} />
-                                </button>
+                                </IconButton>
                                 <span className="min-w-[32px] text-center text-lg font-semibold text-white">{exerciseConfig.reps}</span>
-                                <button
-                                    className="text-blue-400 transition-colors hover:text-blue-300"
-                                    onClick={() => handExerciseConfigChange('reps', '+')}
-                                >
+
+                                <IconButton onClick={() => increment('reps')}>
                                     <FaSquarePlus size={28} />
-                                </button>
+                                </IconButton>
                             </div>
                         </div>
 
@@ -101,19 +88,13 @@ function LinearExerciseCard({ exercise, exerciseConfigChange }: LinearExerciseCa
                         <div className="flex flex-col gap-1">
                             <span className="text-xs font-medium uppercase tracking-wide text-zinc-500">Duration</span>
                             <div className="flex items-center gap-2">
-                                <button
-                                    className="text-blue-400 transition-colors hover:text-blue-300"
-                                    onClick={() => handExerciseConfigChange('duration', '-')}
-                                >
+                                <IconButton onClick={() => decrement('duration')}>
                                     <FaSquareMinus size={28} />
-                                </button>
+                                </IconButton>
                                 <span className="min-w-[32px] text-center text-lg font-semibold text-white">{exerciseConfig.duration}s</span>
-                                <button
-                                    className="text-blue-400 transition-colors hover:text-blue-300"
-                                    onClick={() => handExerciseConfigChange('duration', '+')}
-                                >
+                                <IconButton onClick={() => increment('duration')}>
                                     <FaSquarePlus size={28} />
-                                </button>
+                                </IconButton>
                             </div>
                         </div>
                     </div>

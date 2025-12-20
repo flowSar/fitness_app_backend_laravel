@@ -1,8 +1,9 @@
 import InputError from '@/Components/InputError';
 import DashboardLayout from '@/Layouts/DashboardLayout';
+import { planCategories } from '@/utils/constants';
 import { Textarea } from '@headlessui/react';
 import { useForm, usePage } from '@inertiajs/react';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 
 type InputKeyType = 'name' | 'description' | 'sessionsNumber' | 'level' | 'duration';
 
@@ -15,6 +16,7 @@ function create() {
         image: '',
         level: 'Beginner',
         duration: 0.0,
+        category: 'program',
     });
 
     const handleInputvalueChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -22,31 +24,26 @@ function create() {
         setData(key, e.target.value);
     };
 
-    const handleFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const handleFormSubmit = () => {
+        // e.preventDefault();
         post('/dashboard/plans/');
-
-        if (flush['success'] != null) {
+    };
+    useEffect(() => {
+        if (flush?.success) {
             setData('name', '');
             setData('description', '');
             setData('sessionsNumber', 1);
             setData('image', '');
             setData('duration', 0);
+            setData('category', 'program');
         }
-        // console.log(data.name);
-        // console.log(data.description);
-        // console.log(data.level);
-        // console.log(data.duration);
-        // console.log(data.sessionsNumber);
-        // console.log(data.image);
-    };
-
-    console.log(`errors: ${errors.name} ${processing}`);
+    }, [flush]);
 
     return (
         <DashboardLayout>
+            <header className="flex h-16 items-center justify-center text-2xl font-bold dark:bg-black/30">Create New Workout Plan</header>
             <div className="ml-10 px-10">
-                <form className="w-2xl" onSubmit={handleFormSubmit}>
+                <form className="w-2xl">
                     <div className="">
                         <label htmlFor="name">Name:</label>
                         <input
@@ -98,6 +95,20 @@ function create() {
                         <InputError message={errors.image} />
                     </div>
                     <div className="mt-2">
+                        <label htmlFor="level">Category:</label>
+                        <select
+                            value={data.category}
+                            className="block w-full py-3 dark:bg-black/10"
+                            onChange={(e) => setData('category', e.target.value)}
+                        >
+                            {planCategories.map((category) => (
+                                <option key={category.value} value={category.value} className="dark:bg-white/10 dark:text-black">
+                                    {category.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="mt-2">
                         <label htmlFor="level">Level:</label>
                         <select value={data.level} className="block w-full py-3 dark:bg-black/10" onChange={(e) => setData('level', e.target.value)}>
                             <option value={'Beginner'} className="dark:bg-white/10 dark:text-black">
@@ -126,15 +137,21 @@ function create() {
                         <InputError message={errors.duration} />
                     </div>
                     <div className="mt-4 text-end">
-                        <input
+                        <button
                             disabled={processing}
-                            type="submit"
-                            value={'create'}
+                            onClick={handleFormSubmit}
                             className="cursor-pointer rounded-lg px-8 py-3 duration-200 dark:bg-white/10 dark:text-white dark:hover:bg-white/15"
-                        />
+                        >
+                            create
+                        </button>
                     </div>
                 </form>
             </div>
+            {processing && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50">
+                    <p className="text-lg font-semibold text-white">Loading...</p>
+                </div>
+            )}
         </DashboardLayout>
     );
 }

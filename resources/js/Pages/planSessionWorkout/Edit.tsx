@@ -1,3 +1,4 @@
+import ExerciseSelectDialog from '@/Components/ExerciseSelectDialog';
 import LinearExercisePreviewCard from '@/Components/LinearExercisePreviewCard';
 import SelectOptionMenu from '@/Components/SelectOptionMenu';
 import DashboardLayout from '@/Layouts/DashboardLayout';
@@ -5,7 +6,7 @@ import { ExerciseInterface, PlanInterafce, SessionInterface } from '@/types';
 import { Link } from '@inertiajs/react';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
-function Index({ plans = [], exercises = [] }: { plans: PlanInterafce[]; exercises: ExerciseInterface[] }) {
+function Edit({ plans = [], exercises = [] }: { plans: PlanInterafce[]; exercises: ExerciseInterface[] }) {
     const [plan, setPlan] = useState<PlanInterafce>(plans[0]);
     const [selectedSession, setSelectedSession] = useState<SessionInterface>(plans[0].sessions[0]);
     const [selectedExercisesIds, setSelectedExerciIds] = useState<string[]>(selectedSession.session_exercises?.map((ex) => ex.exercise.id)!);
@@ -39,12 +40,9 @@ function Index({ plans = [], exercises = [] }: { plans: PlanInterafce[]; exercis
             <div className="mt-4 flex items-center justify-end">
                 <div className="space-x-2">
                     <button className="rounded-md bg-red-600 px-4 py-2 text-lg font-semibold text-white">Delete</button>
-                    <Link
-                        href={`/dashboard/plans/sessions/${selectedSession.id}/exercises`}
-                        className="rounded-md bg-green-600 px-4 py-2 text-lg font-semibold text-white"
-                    >
+                    <a onClick={() => {}} href="#edit" className="rounded-md bg-green-600 px-4 py-2 text-lg font-semibold text-white">
                         Edite
-                    </Link>
+                    </a>
                 </div>
             </div>
             <div>
@@ -70,20 +68,28 @@ function Index({ plans = [], exercises = [] }: { plans: PlanInterafce[]; exercis
                 </div>
             </div>
 
-            <div id="edit">
-                <div onClick={openDialog} className="mt-6 cursor-pointer border-2 border-dotted border-red-400 px-4 py-3 text-center">
-                    <h1>Add Exercise</h1>
-                </div>
-                <div className="mt-4 space-x-4 text-end">
-                    <button onClick={() => {}} className="rounded-md bg-gray-900 px-4 py-2 text-lg font-semibold text-white">
-                        Cancel
-                    </button>
+            <>
+                <div id="edit">
+                    <div onClick={openDialog} className="mt-6 cursor-pointer border-2 border-dotted border-red-400 px-4 py-3 text-center">
+                        <h1>Add Exercise</h1>
+                    </div>
+                    <div className="mt-4 space-x-4 text-end">
+                        <button onClick={() => {}} className="rounded-md bg-gray-900 px-4 py-2 text-lg font-semibold text-white">
+                            Cancel
+                        </button>
 
-                    <button className="rounded-md bg-gray-600 px-4 py-2 text-lg font-semibold text-white">Update</button>
+                        <button className="rounded-md bg-gray-600 px-4 py-2 text-lg font-semibold text-white">Update</button>
+                    </div>
                 </div>
-            </div>
+                <ExerciseSelectDialog
+                    sessionExercises={selectedExercisesIds}
+                    exercises={exercises}
+                    dialogRef={dialogRef}
+                    onSelectedValue={handleSelectedExercises}
+                />
+            </>
         </DashboardLayout>
     );
 }
 
-export default Index;
+export default Edit;

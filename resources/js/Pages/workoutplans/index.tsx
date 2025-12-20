@@ -1,8 +1,16 @@
 import PlanCard from '@/Components/PlanCard';
 import DashboardLayout from '@/Layouts/DashboardLayout';
 import { PlanInterafce } from '@/types';
+import { usePage } from '@inertiajs/react';
+import { useEffect } from 'react';
 
 function index({ plans }: { plans: PlanInterafce[] }) {
+    const { flush }: any = usePage().props;
+    useEffect(() => {
+        if (flush?.success) {
+            console.log('deleted succefully');
+        }
+    }, [flush]);
     return (
         <DashboardLayout>
             <header className="flex h-16 items-center justify-center text-2xl font-bold dark:bg-black/30">Workout Plans</header>

@@ -1,20 +1,24 @@
 import InputError from '@/Components/InputError';
 import DashboardLayout from '@/Layouts/DashboardLayout';
+import { PlanInterafce } from '@/types';
+import { planCategories } from '@/utils/constants';
 import { Textarea } from '@headlessui/react';
 import { useForm, usePage } from '@inertiajs/react';
 import { ChangeEvent, useEffect } from 'react';
 
-type InputKeyType = 'name' | 'description' | 'notes' | 'level' | 'video' | 'image';
+type InputKeyType = 'name' | 'description' | 'sessionsNumber' | 'level' | 'duration' | 'category';
 
-function create() {
+function Edit({ plan }: { plan: PlanInterafce }) {
     const { flush }: any = usePage().props;
-    const { post, data, setData, errors, processing } = useForm({
-        name: '',
-        description: '',
-        notes: '',
-        image: '',
-        video: '',
-        level: 'Beginner',
+    console.log('plan: ', plan);
+    const { put, data, setData, errors, processing } = useForm({
+        name: plan.name,
+        description: plan.description,
+        sessionsNumber: plan.sessions_number,
+        image: plan.image,
+        level: plan.level,
+        duration: plan.duration,
+        category: plan.category,
     });
 
     const handleInputvalueChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -22,27 +26,21 @@ function create() {
         setData(key, e.target.value);
     };
 
-    const handleFormSubmit = (e: ChangeEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        post('/dashboard/exercises');
+    const handleFormSubmit = () => {
+        // e.preventDefault();
+        put(`/dashboard/plans/${plan.id}`);
     };
-
     useEffect(() => {
         if (flush?.success) {
-            setData('name', '');
-            setData('description', '');
-            setData('notes', '');
-            setData('image', '');
-            setData('video', '');
+            alert('update succeed');
         }
     }, [flush]);
 
-    // console.log(`errors: ${JSON.stringify(flush)}`);
-
     return (
         <DashboardLayout>
-            <div className="ml-10">
-                <form className="w-2xl" onSubmit={handleFormSubmit}>
+            <header className="flex h-16 items-center justify-center text-2xl font-bold dark:bg-black/30">Create New Workout Plan</header>
+            <div className="ml-10 px-10">
+                <form className="w-2xl">
                     <div className="">
                         <label htmlFor="name">Name:</label>
                         <input
@@ -64,21 +62,22 @@ function create() {
                             className="mt-1 block w-full p-4 dark:bg-black/10"
                             value={data.description}
                             onChange={(e) => setData('description', e.target.value)}
+                            rows={2}
                         ></Textarea>
                         <InputError message={errors.description} />
                     </div>
                     <div className="mt-2">
-                        <label htmlFor="Notes">notes:</label>
-                        <Textarea
-                            id="notes"
-                            placeholder="Notes"
-                            className="mt-1 block w-full p-4 dark:bg-black/10"
-                            value={data.notes}
-                            onChange={(e) => setData('notes', e.target.value)}
-                        ></Textarea>
-                        <InputError message={errors.description} />
+                        <label htmlFor="sessionsNumber">Sessions Number:</label>
+                        <input
+                            id="sessionsNumber"
+                            name="sessionsNumber"
+                            type="number"
+                            className="mt-2 block w-full px-4 py-3 dark:bg-black/10"
+                            placeholder="SessionNumber"
+                            value={data.sessionsNumber}
+                            onChange={handleInputvalueChange}
+                        />
                     </div>
-
                     <div className="mt-2">
                         <label htmlFor="image">Image Url:</label>
                         <input
@@ -93,41 +92,55 @@ function create() {
                         <InputError message={errors.image} />
                     </div>
                     <div className="mt-2">
-                        <label htmlFor="video">Video URL:</label>
-                        <input
-                            id="video"
-                            name="duration"
-                            type="text"
-                            className="mt-2 block w-full px-4 py-3 dark:bg-black/10"
-                            placeholder="Video URL"
-                            value={data.video}
-                            onChange={handleInputvalueChange}
-                        />
-                        <InputError message={errors.video} />
+                        <label htmlFor="level">Category:</label>
+                        <select
+                            value={data.category}
+                            className="block w-full py-3 dark:bg-black/10"
+                            onChange={(e) => setData('category', e.target.value)}
+                        >
+                            {planCategories.map((category) => (
+                                <option key={category.value} value={category.value} className="dark:bg-white/10 dark:text-black">
+                                    {category.name}
+                                </option>
+                            ))}
+                        </select>
                     </div>
-                    {/* level */}
                     <div className="mt-2">
                         <label htmlFor="level">Level:</label>
                         <select value={data.level} className="block w-full py-3 dark:bg-black/10" onChange={(e) => setData('level', e.target.value)}>
-                            <option value={'Beginner'} className="dark:bg-black/10 dark:text-black">
+                            <option value={'Beginner'} className="dark:bg-white/10 dark:text-black">
                                 Beginner
                             </option>
-                            <option value={'Intermediate'} className="dark:bg-black/10 dark:text-black">
+                            <option value={'Intermediate'} className="dark:bg-white/10 dark:text-black">
                                 Intermediate
                             </option>
-                            <option value={'Advanced'} className="dark:bg-black/10 dark:text-black">
+                            <option value={'Advanced'} className="dark:bg-white/10 dark:text-black">
                                 Advanced
                             </option>
                         </select>
                     </div>
-
-                    <div className="mt-4 text-end">
+                    <div className="mt-2">
+                        <label htmlFor="duration">Duration:</label>
                         <input
-                            disabled={processing}
-                            type="submit"
-                            value={'create'}
-                            className="cursor-pointer rounded-lg px-8 py-3 duration-200 dark:bg-white/10 dark:text-white dark:hover:bg-white/15"
+                            id="duration"
+                            name="duration"
+                            type="number"
+                            step="any"
+                            className="mt-2 block w-full px-4 py-3 dark:bg-black/10"
+                            placeholder="Workout Duration"
+                            value={data.duration}
+                            onChange={handleInputvalueChange}
                         />
+                        <InputError message={errors.duration} />
+                    </div>
+                    <div className="mt-4 text-end">
+                        <button
+                            disabled={processing}
+                            onClick={handleFormSubmit}
+                            className="cursor-pointer rounded-lg px-8 py-3 duration-200 dark:bg-white/10 dark:text-white dark:hover:bg-white/15"
+                        >
+                            Update
+                        </button>
                     </div>
                 </form>
             </div>
@@ -140,4 +153,4 @@ function create() {
     );
 }
 
-export default create;
+export default Edit;
